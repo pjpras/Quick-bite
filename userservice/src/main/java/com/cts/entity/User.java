@@ -12,13 +12,17 @@ public class User {
 	private Long id;
 	@Column(name="email" , unique = true, nullable = false)
 	private String email;
+	@Column(nullable=false)
 	private String password;
+	@Column(nullable=false)
 	private String name;
+	@Column(nullable=false)
 	private String phno;
+	@Column(nullable=false)
 	private String location;
 	private boolean status=true;
 	@Column(name = "availability_status")
-	private Boolean availabilityStatus = true; // Only for delivery partners - null for others
+	private Boolean availabilityStatus = true; 
 	@Column(name = "role", insertable = false, updatable = false)
 	private String role;
 	@Column(columnDefinition = "int default 0")

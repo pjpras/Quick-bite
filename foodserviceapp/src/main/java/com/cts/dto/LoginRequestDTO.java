@@ -1,8 +1,11 @@
 package com.cts.dto;
 
+import jakarta.validation.constraints.Email;
 
 public class LoginRequestDTO {
+	@Email(message="Email invalid format")
     private String email;
+    
     private String password;
 	public String getEmail() {
 		return email;

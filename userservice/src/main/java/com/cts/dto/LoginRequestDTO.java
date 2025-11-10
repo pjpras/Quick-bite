@@ -2,6 +2,7 @@ package com.cts.dto;
 
 
 public class LoginRequestDTO {
+	@Email(message="Email id is invalid format")
     private String email;
     private String password;
 	public String getEmail() {
