@@ -1,0 +1,327 @@
+
+.myorders-zomato {
+    background-color: #f8f8f8;
+    min-height: 100vh;
+    padding: 20px 0;
+}
+.orders-container-zomato {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+.orders-header {
+    margin-bottom: 24px;
+}
+.orders-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1c1c1c;
+    margin: 0;
+}
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.order-card-zomato {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+}
+.order-card-zomato:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.order-header-zomato {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px 16px 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.restaurant-info h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1c1c1c;
+    margin: 0 0 4px 0;
+}
+.order-location {
+    font-size: 14px;
+    color: #696969;
+    margin: 0;
+}
+.order-status-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+}
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+.status-dot.delivered {
+    background-color: #34c759; 
+}
+.status-dot.out-for-delivery {
+    background-color: #ff3b30; 
+}
+.status-dot.in-progress {
+    background-color: #ff9500; 
+}
+.status-dot.preparing {
+    background-color: #ffba08; 
+}
+.status-text {
+    font-size: 12px;
+    font-weight: 500;
+    color: #1c1c1c;
+    text-transform: uppercase;
+}
+.order-items-section {
+    padding: 12px 16px;
+}
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.order-item:last-child {
+    margin-bottom: 0;
+}
+.item-image-zomato {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+.item-details-zomato {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+}
+.item-name {
+    font-size: 18px;
+    color: #1c1c1c;
+    font-weight: 600;
+    align-self: center;
+}
+.item-quantity {
+    font-size: 14px;
+    color: #696969;
+    font-weight: 500;
+}
+.order-footer-zomato {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #fafafa;
+    border-top: 1px solid #f0f0f0;
+}
+.order-info-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.order-time {
+    font-size: 12px;
+    color: #696969;
+    margin: 0;
+}
+.order-total {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1c1c1c;
+    margin: 0;
+}
+.order-otp {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1c1c1c;
+    margin: 4px 0 0 0;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    padding: 6px 10px;
+    border-radius: 4px;
+    display: inline-block;
+}
+.order-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.reorder-btn,
+.rate-btn,
+.track-btn {
+    padding: 8px 16px;
+    border: 1px solid #ff9500;
+    background: white;
+    color: #ff9500;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+.track-btn {
+    background: #ff9500;
+    color: white;
+}
+.track-btn:hover {
+    background: #ff9500;
+}
+
+.cancel-btn {
+    padding: 8px 16px;
+    border: 1px solid #dc3545;
+    background: white;
+    color: #dc3545;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+
+.cancel-btn:hover {
+    background: #dc3545;
+    color: white;
+}
+.rating-display {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #60b246;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.rating-star {
+    font-size: 14px;
+}
+.order-id-footer {
+    padding: 8px 16px;
+    background: #f8f8f8;
+    border-top: 1px solid #f0f0f0;
+    font-size: 12px;
+    color: #696969;
+}
+.no-orders {
+    text-align: center;
+    padding: 60px 20px;
+    color: #696969;
+    font-size: 16px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+@media (max-width: 768px) {
+    .orders-container-zomato {
+        padding: 0 12px;
+    }
+    .order-header-zomato {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+    .order-footer-zomato {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    .order-actions {
+        align-self: stretch;
+        justify-content: space-between;
+    }
+    .reorder-btn,
+    .rate-btn,
+    .track-btn,
+    .cancel-btn {
+        flex: 1;
+        text-align: center;
+    }
+}
+
+/* Food Rating Styles */
+.order-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.item-details-zomato {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.item-rating {
+    align-self: flex-end;
+    margin-top: 8px;
+}
+
+.rate-food-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    min-width: 120px;
+    text-align: center;
+}
+
+.rate-food-btn:hover {
+    background-color: #c82333;
+}
+
+.rate-food-btn option {
+    background-color: white;
+    color: black;
+}
+
+.rating-loading {
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+    padding: 8px 16px;
+}
+
+.food-rating-display {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #666;
+}
+
+.food-rating-display .rating-star {
+    color: #ffd700;
+    font-size: 14px;
+}
+
+.food-rating-display .rating-value {
+    font-weight: bold;
+    color: #1c1c1c;
+}
+
+.food-rating-display .rated-text {
+    color: #28a745;
+    font-weight: 500;
+}

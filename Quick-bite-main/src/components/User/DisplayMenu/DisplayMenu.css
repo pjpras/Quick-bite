@@ -1,0 +1,39 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 24px 0;
+}
+.pagination button {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #e0e7ef;
+  color: #2563eb;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.pagination button.active,
+.pagination button:hover:not(:disabled) {
+  background: #2563eb;
+  color: #fff;
+}
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.food-display-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 30px;
+  row-gap: 30px;
+  margin-top: 30px;
+}
+.food-item-image {
+  max-width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 15px 15px 0px;
+}

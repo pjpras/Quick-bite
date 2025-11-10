@@ -1,0 +1,126 @@
+
+
+.feedback-section {
+    padding: 50px 20px;
+    margin: 30px 20px 40px 20px;
+    background-color: #f8f9fa;
+    border-radius: 20px;
+    border-bottom: 3px solid #e0e0e0;
+}
+
+.feedback-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feedback-container h2 {
+    text-align: center;
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.feedback-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.feedback-card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 280px;
+    border: 1px solid #e0e0e0;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+}
+
+.customer-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.customer-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    border: 2px solid #ddd;
+}
+
+.customer-details h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+.rating {
+    font-size: 16px;
+}
+
+.feedback-text {
+    color: #666;
+    line-height: 1.5;
+    font-size: 14px;
+    margin: 0;
+    font-style: italic;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    text-align: left;
+    flex-grow: 1;
+    margin-top: 10px;
+}
+
+
+@media (max-width: 768px) {
+    .feedback-section {
+        padding: 30px 15px;
+        margin: 20px 15px 30px 15px;
+        border-radius: 15px;
+    }
+    
+    .feedback-container h2 {
+        font-size: 24px;
+        margin-bottom: 30px;
+    }
+    
+    .feedback-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .feedback-card {
+        width: 100%;
+        max-width: 350px;
+        border-radius: 12px;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .customer-image {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .customer-details h3 {
+        font-size: 16px;
+    }
+    
+    .rating {
+        font-size: 14px;
+    }
+}
