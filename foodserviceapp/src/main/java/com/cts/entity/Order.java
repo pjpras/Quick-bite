@@ -13,8 +13,11 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(nullable = false)
 	private Integer totalQty;
+	@Column( nullable = false)
 	private Double totalPrice;
+	@Column( nullable = false)
 	private LocalDate orderDate;
 	private LocalTime orderTime;
 	

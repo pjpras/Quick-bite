@@ -1,5 +1,6 @@
 package com.cts.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,12 +14,19 @@ public class OrderAddress {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column( nullable = false, length = 15)
 	private String firstName;
+    @Column( nullable = false, length = 15)
 	private String lastName;
+	 @Column( nullable = false, length = 20)
 	private String street;
+	 @Column( nullable = false, length = 20)
 	private String city;
+	 @Column( nullable = false, length = 20)
 	private String state;
+	 @Column( nullable = false, length = 20)
 	private String pin;
+	 @Column( nullable = false, length = 20)
 	private String phoneNo;
 	@OneToOne
 	@JoinColumn(name="order_id")

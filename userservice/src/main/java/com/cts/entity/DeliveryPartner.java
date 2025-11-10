@@ -16,9 +16,4 @@ public class DeliveryPartner extends User{
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
-	
-	
-
-	
-
 }
