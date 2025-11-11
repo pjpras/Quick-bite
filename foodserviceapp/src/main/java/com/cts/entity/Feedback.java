@@ -15,10 +15,10 @@ public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int feedbackId;
-
+/* 
     @Column(nullable = true)
     private Integer partnerRating;
-
+*/
     @Column(nullable = true)
     private Integer foodRating;
 
@@ -27,9 +27,9 @@ public class Feedback {
     private Integer orderId;
     
     private long  customer;
-
+/* 
     private long deliveryPartner;
-
+*/
     @ManyToOne
     @JoinColumn(name="food_id", nullable = true)
     private Food food;
@@ -42,7 +42,7 @@ public class Feedback {
         this.feedbackId = feedbackId;
     }
 
-
+/* 
     public Integer getPartnerRating() {
         return partnerRating;
     }
@@ -50,7 +50,7 @@ public class Feedback {
     public void setPartnerRating(Integer partnerRating) {
         this.partnerRating = partnerRating;
     }
-
+*/
     public Integer getFoodRating() {
         return foodRating;
     }
@@ -83,7 +83,7 @@ public class Feedback {
 	public void setCustomer(long customer) {
 		this.customer = customer;
 	}
-
+/*
 	public long getDeliveryPartner() {
 		return deliveryPartner;
 	}
@@ -91,7 +91,7 @@ public class Feedback {
 	public void setDeliveryPartner(long deliveryPartner) {
 		this.deliveryPartner = deliveryPartner;
 	}
-
+ */
 	public Integer getOrderId() {
 		return orderId;
 	}

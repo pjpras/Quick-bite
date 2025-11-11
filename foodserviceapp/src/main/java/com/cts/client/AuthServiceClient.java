@@ -34,7 +34,6 @@ public interface AuthServiceClient {
     @GetMapping("/api/v1/users/deliverypartners/active")
     ResponseEntity<List<UserResponseDTO>> getActiveDeliveryPartners();
     
-
     @GetMapping("/api/v1/users/customers/search")
     ResponseEntity<List<UserResponseDTO>> searchCustomersByName(@RequestParam("name") String name);
     

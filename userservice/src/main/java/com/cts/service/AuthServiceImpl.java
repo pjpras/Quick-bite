@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
 
         Customer newCustomer = new Customer();
         newCustomer.setEmail(registerRequestDTO.getEmail());
-        newCustomer.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword())); // hash password
+        newCustomer.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword())); 
         newCustomer.setName(registerRequestDTO.getName());
         newCustomer.setPhno(registerRequestDTO.getPhno());
         newCustomer.setLocation(registerRequestDTO.getLocation());
@@ -115,7 +115,7 @@ public class AuthServiceImpl implements AuthService {
 
         String role = existingUser.getRole();
         String normalizedRole = role
-            .replaceAll("([a-z])([A-Z])", "$1_$2")  // camelCase to snake_case
+            .replaceAll("([a-z])([A-Z])", "$1_$2")  
             .toUpperCase();  
 
         String token = jwtUtil.generateToken(

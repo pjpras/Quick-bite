@@ -8,6 +8,7 @@ import com.cts.service.UserServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class UserController {
 
 	@Operation(summary = "Register New Customer")
     @PostMapping("/signup/customer")
-    public ResponseEntity<RegisterCustomerResponseDTO> createCustomer(@RequestBody RegisterCustomerRequestDTO registerRequestDTO) {
+    public ResponseEntity<RegisterCustomerResponseDTO> createCustomer(@Valid @RequestBody RegisterCustomerRequestDTO registerRequestDTO) {
         RegisterCustomerResponseDTO responseDTO = authService.createCustomer(registerRequestDTO);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
@@ -40,14 +41,14 @@ public class UserController {
 
     @Operation(summary = "Register New Delivery Partner")
     @PostMapping("/signup/partner")
-    public ResponseEntity<RegisterDeliveryPartnerResponseDTO> createDeliveryPartner(@RequestBody RegisterDeliveryPartnerRequestDTO registerDeliveryPartnerDTO) {
+    public ResponseEntity<RegisterDeliveryPartnerResponseDTO> createDeliveryPartner(@Valid @RequestBody RegisterDeliveryPartnerRequestDTO registerDeliveryPartnerDTO) {
         RegisterDeliveryPartnerResponseDTO registerDeliveryPartnerResponseDTO = authService.createDeliveryPartner(registerDeliveryPartnerDTO);
         return new ResponseEntity<>(registerDeliveryPartnerResponseDTO, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Login User")
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginRequestDTO loginDTO) {
+    public ResponseEntity<LoginResponseDTO> loginUser(@Valid @RequestBody LoginRequestDTO loginDTO) {
         LoginResponseDTO responseDTO = authService.loginUser(loginDTO);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
@@ -123,14 +124,14 @@ public class UserController {
     
     @Operation(summary = "Update the Customer")
     @PutMapping("/customer/update")
-    public ResponseEntity<RegisterCustomerResponseDTO> updateCustomer(@RequestBody RegisterCustomerRequestDTO registerRequestDTO) {
+    public ResponseEntity<RegisterCustomerResponseDTO> updateCustomer(@Valid @RequestBody RegisterCustomerRequestDTO registerRequestDTO) {
         RegisterCustomerResponseDTO updatedCustomer = userService.updateCustomer(registerRequestDTO);
         return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
     }
     
     @Operation(summary = "Update the Delivery Partner")
     @PutMapping("/deliverypartner/update")
-    public ResponseEntity<RegisterDeliveryPartnerResponseDTO> updateDeliveryPartner(@RequestBody RegisterDeliveryPartnerRequestDTO dp) {
+    public ResponseEntity<RegisterDeliveryPartnerResponseDTO> updateDeliveryPartner(@Valid @RequestBody RegisterDeliveryPartnerRequestDTO dp) {
         RegisterDeliveryPartnerResponseDTO updatedDP = userService.updateDeliveryPartner(dp);
         return new ResponseEntity<>(updatedDP, HttpStatus.OK);
     }

@@ -1,7 +1,8 @@
 package com.cts.controller;
-
+/* 
 import com.cts.dto.DeliveryPartnerFeedbackRequestDTO;
 import com.cts.dto.DeliveryPartnerFeedbackResponseDTO;
+*/
 import com.cts.dto.FoodFeedbackRequestDTO;
 import com.cts.dto.FoodFeedbackResponseDTO;
 import com.cts.dto.RatingResponseDTO;
@@ -36,7 +37,7 @@ public class FeedbackController {
         Object response = feedbackService.submitFoodFeedback(foodFeedbackRequestDTO, foodId);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-    
+   /* 
     @PostMapping("/partner/{deliveryPartnerId}")
     @Operation(summary = "Submit feedback for delivery partner", description = "Returns the saved feedback details.")
     public ResponseEntity<?> submitFeedback(
@@ -46,21 +47,21 @@ public class FeedbackController {
         Object response = feedbackService.submitDeliveryPartnerFeedback(deliveryPartnerFeedbackRequestDTO, deliveryPartnerId);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-
+ */
    @GetMapping("/food/{foodId}")
    @Operation(summary = "Get feedback by food ID", description = "Returns all feedback for a specific food item.")
   public ResponseEntity<List<FoodFeedbackResponseDTO>> getFeedbackByFood(@PathVariable Integer foodId) {
       List<FoodFeedbackResponseDTO> feedbacks = feedbackService.getFeedbackByFoodId(foodId);
         return ResponseEntity.ok(feedbacks);
     }
-
+/* 
  @GetMapping("/partner/{partnerId}")
 @Operation(summary = "Get feedback by partner ID", description = "Returns all feedback for a specific delivery partner.")
  public ResponseEntity<List<DeliveryPartnerFeedbackResponseDTO>> getFeedbackByPartner(@PathVariable Long partnerId) {
        List<DeliveryPartnerFeedbackResponseDTO> feedbacks = feedbackService.getFeedbackByDeliveryPartnerId(partnerId);
    return ResponseEntity.ok(feedbacks);
    }
-   
+ */
    @GetMapping("/completed-orders")
    @Operation(summary = "Get completed orders for feedback", description = "Returns all completed orders that the customer can provide feedback on.")
    public ResponseEntity<List<Order>> getCompletedOrdersForFeedback() {
@@ -79,7 +80,8 @@ public class FeedbackController {
        response.setStatus(isGiven);
        return ResponseEntity.ok(response);
    }
-   
+}
+   /*
    @GetMapping("Rating/status/delivery-partner")
    @Operation(summary = "Check if delivery partner rating is given", description = "Returns true if rating is given for a delivery partner in an order.")
    public ResponseEntity<RatingResponseDTO> isDeliveryPartnerRatingGiven(
@@ -92,3 +94,4 @@ public class FeedbackController {
        return ResponseEntity.ok(response);
    }
 }
+    */

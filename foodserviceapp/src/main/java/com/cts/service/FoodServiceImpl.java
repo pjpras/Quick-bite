@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.cts.dto.FoodRequestDTO;
 import com.cts.dto.FoodResponseDTO;
+import com.cts.exception.CategoryNotFoundException;
 import com.cts.exception.FoodAlreadyExistsException;
 import com.cts.exception.FoodNotFoundException;
 import com.cts.exception.PriceNotPositiveException;
@@ -12,6 +13,9 @@ import com.cts.repository.CategoryRepository;
 import com.cts.repository.FoodRepository;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.cts.entity.Category;
@@ -20,6 +24,8 @@ import com.cts.entity.Food;
 
 @Service
 public class FoodServiceImpl implements FoodService {
+
+	private static final int PAGE_SIZE = 8; // Hardcoded page size
 
 	private FoodRepository repo;
 	private CategoryRepository categoryRepo;
@@ -36,17 +42,18 @@ public class FoodServiceImpl implements FoodService {
 			throw new FoodAlreadyExistsException("Food already exists with name - " + requestFood.getName());
 		}
 
-		Food food = mapper.map(requestFood, Food.class);
-
-		if (categoryName != null && !categoryName.trim().isEmpty()) {
-			Category category = categoryRepo.findByName(categoryName.trim());
-			if (category == null) {
-				category = new Category();
-				category.setName(categoryName.trim());
-				category = categoryRepo.save(category);
-			}
-			food.setCategory(category);
+		if (categoryName == null || categoryName.trim().isEmpty()) {
+			throw new CategoryNotFoundException("Category name is required to add food");
 		}
+
+		Category category = categoryRepo.findByName(categoryName.trim());
+		if (category == null) {
+			throw new CategoryNotFoundException("Category not found with name - " + categoryName + ". Please create the category first.");
+		}
+
+		Food food = mapper.map(requestFood, Food.class);
+		food.setCategory(category);
+
 		food = repo.save(food);
 		return mapper.map(food, FoodResponseDTO.class);
 	}
@@ -106,18 +113,21 @@ public class FoodServiceImpl implements FoodService {
 		return responseFoodlist;
 	}
 	
-	public List<FoodResponseDTO> getActiveFood() {
-
-		List<Food> food = repo.findByStatus(true);
-		if (food.isEmpty()) {
+	public Page<FoodResponseDTO> getActiveFood(int page) {
+		
+		int zeroBasedPage = page - 1;
+		if (zeroBasedPage < 0) {
+			zeroBasedPage = 0; 
+		}
+		
+		Pageable pageable = PageRequest.of(zeroBasedPage, PAGE_SIZE);
+		Page<Food> foodPage = repo.findByStatus(true, pageable);
+		
+		if (foodPage.isEmpty()) {
 			throw new FoodNotFoundException("No Active Food Found");
 		}
-		List<FoodResponseDTO> responseFoodlist = new ArrayList<>();
-		for (Food f : food) {
-			FoodResponseDTO res = mapper.map(f, FoodResponseDTO.class);
-			responseFoodlist.add(res);
-		}
-		return responseFoodlist;
+		
+		return foodPage.map(food -> mapper.map(food, FoodResponseDTO.class));
 	}
 
 	public FoodResponseDTO updateFood(int id, FoodRequestDTO requestFood) {
@@ -132,12 +142,8 @@ public class FoodServiceImpl implements FoodService {
 		if (requestFood.getCategoryName() != null && !requestFood.getCategoryName().trim().isEmpty()) {
 			Category category = categoryRepo.findByName(requestFood.getCategoryName().trim());
 			if (category == null) {
-
-				category = new Category();
-				category.setName(requestFood.getCategoryName().trim());
-				category = categoryRepo.save(category);
+				throw new CategoryNotFoundException("Category not found with name - " + requestFood.getCategoryName() + ". Please create the category first.");
 			}
-
 			existingFood.setCategory(category);
 		}
 
@@ -163,15 +169,15 @@ public class FoodServiceImpl implements FoodService {
 	public FoodResponseDTO updateFoodCategory(int id, String categoryName) {
 		Food existingFood = repo.findById(id).orElseThrow(() -> new FoodNotFoundException("Food not found with id - " + id));
 
-		if (categoryName != null && !categoryName.trim().isEmpty()) {
-			Category category = categoryRepo.findByName(categoryName.trim());
-			if (category == null) {
-				category = new Category();
-				category.setName(categoryName.trim());
-				category = categoryRepo.save(category);
-			}
-			existingFood.setCategory(category);
+		if (categoryName == null || categoryName.trim().isEmpty()) {
+			throw new CategoryNotFoundException("Category name is required");
 		}
+		
+		Category category = categoryRepo.findByName(categoryName.trim());
+		if (category == null) {
+			throw new CategoryNotFoundException("Category not found with name - " + categoryName + ". Please create the category first.");
+		}
+		existingFood.setCategory(category);
 
 		existingFood = repo.save(existingFood);
 		return mapper.map(existingFood, FoodResponseDTO.class);

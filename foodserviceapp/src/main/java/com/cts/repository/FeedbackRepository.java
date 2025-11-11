@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
     List<Feedback> findByCustomer(Long customerId);
-    List<Feedback> findByDeliveryPartner(Long deliveryPartnerId);
     
     List<Feedback> findByFoodId(Integer foodId);
     
@@ -20,7 +19,5 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
     
     @Query("SELECT COUNT(f) > 0 FROM Feedback f WHERE f.orderId = :orderId AND f.customer = :customerId AND f.food.id = :foodId")
     boolean existsByOrderIdAndCustomerAndFoodId(@Param("orderId") int orderId, @Param("customerId") long customerId, @Param("foodId") int foodId);
-    
-    @Query("SELECT COUNT(f) > 0 FROM Feedback f WHERE f.orderId = :orderId AND f.customer = :customerId AND f.deliveryPartner = :partnerId")
-    boolean existsByOrderIdAndCustomerAndDeliveryPartner(@Param("orderId") int orderId, @Param("customerId") long customerId, @Param("partnerId") long partnerId);
+
 }
