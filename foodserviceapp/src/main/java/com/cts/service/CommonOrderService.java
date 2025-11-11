@@ -11,6 +11,7 @@ import com.cts.repository.OrderItemRepository;
 import com.cts.repository.OrdersRepository;
 import com.cts.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,11 @@ public class CommonOrderService {
     
 
     public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+        Sort sort = Sort.by(
+            Sort.Order.desc("orderDate"),
+            Sort.Order.desc("orderTime")
+        );
+        return orderRepository.findAll(sort);
     }
     
 
@@ -110,7 +115,7 @@ public class CommonOrderService {
     public OrderResponseDTO mapToOrderResponseDto(Order order) {
         OrderResponseDTO dto = mapper.map(order, OrderResponseDTO.class);
         
-        // Fetch customer details if customer ID exists
+        
         if (order.getCustomer() != 0) {
             com.cts.model.User customer = userService.getUserById(order.getCustomer());
             if (customer != null) {
@@ -119,7 +124,7 @@ public class CommonOrderService {
             }
         }
         
-        // Fetch delivery partner details if delivery partner ID exists
+       
         if (order.getDeliveryPartner() != 0) {
             com.cts.model.User deliveryPartner = userService.getUserById(order.getDeliveryPartner());
             if (deliveryPartner != null) {

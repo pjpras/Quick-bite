@@ -4,6 +4,7 @@ public class CategoryResponseDTO {
 
     private int id;
     private String name;
+    private String img;
 
     public int getId() {
         return id;
@@ -19,5 +20,13 @@ public class CategoryResponseDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

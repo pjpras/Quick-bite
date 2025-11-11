@@ -140,7 +140,13 @@ public class CustomerOrderService {
             throw new IllegalStateException("Order status is " + 
                 order.getOrderStatus().getDisplayName() + ". Cannot cancel.");
         }
-        order.setOrderStatus(OrderStatus.CANCELLED);
+        if(order.getOrderStatus() == OrderStatus.OUT) {
+        	throw new IllegalStateException("Order is out for delivery. Cannot cancel at this stage.");
+
+        }
+        if(order.getOrderStatus() == OrderStatus.PENDING) {
+            order.setOrderStatus(OrderStatus.CANCELLED);
+        }
         Order savedOrder = orderRepository.save(order);
         authServiceClient.updateDeliveryPartnerAvailability(order.getDeliveryPartner(), true);
         return mapper.map(savedOrder, OrderPlacementResponseDTO.class);
@@ -172,7 +178,6 @@ public class CustomerOrderService {
 
 
     private OrderResponseDTO mapToOrderResponseDto(Order order) {
-        // Delegate to CommonOrderService to avoid code duplication
         return commonService.mapToOrderResponseDto(order);
     }
 }

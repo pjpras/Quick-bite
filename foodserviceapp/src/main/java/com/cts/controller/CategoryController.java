@@ -6,12 +6,10 @@ import com.cts.dto.CategoryRequestDTO;
 import com.cts.dto.CategoryResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.cts.entity.Category;
 import com.cts.service.CategoryService;
 
 @RestController
@@ -59,12 +57,18 @@ public class CategoryController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PutMapping("/update")
-    @Operation( summary = "Updating a Category by id", description = "Updating a Category" )
-    public ResponseEntity<CategoryResponseDTO> updateCategoryById(@Valid @RequestParam int id , @RequestBody CategoryRequestDTO requestCategory) {
-        CategoryResponseDTO responseCategory = categoryService.updateCategory(id,requestCategory);
-        if (responseCategory != null) {
-            return new ResponseEntity<>(responseCategory, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @Operation( summary = "Updating a Category by id", description = "Updating a Category with name and img in request body" )
+    public ResponseEntity<CategoryResponseDTO> updateCategoryById(
+            @RequestParam int id, 
+            @Valid @RequestBody CategoryRequestDTO requestCategory) {
+        CategoryResponseDTO responseCategory = categoryService.updateCategory(id, requestCategory);
+        return new ResponseEntity<>(responseCategory, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete")
+    @Operation( summary = "Deleting a Category by id", description = "Deleting a Category" )
+    public ResponseEntity<Void> deleteCategory(@RequestParam int id) {
+        categoryService.deleteCategory(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

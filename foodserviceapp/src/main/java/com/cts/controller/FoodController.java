@@ -7,6 +7,7 @@ import com.cts.dto.FoodResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -66,15 +67,15 @@ public class FoodController {
 
     }
     @GetMapping("/active")
-    @Operation(summary = "Getting Active Food Only", description = "Getting active food items (status=true hardcoded for security)")
-    public ResponseEntity<List<FoodResponseDTO>> getActiveFood() {
-        List<FoodResponseDTO> responseFoodlist = foodService.getActiveFood();
-        return new ResponseEntity<>(responseFoodlist, HttpStatus.OK);
+    @Operation(summary = "Getting Active Food with Pagination", description = "Getting active food items with pagination (page size = 8, page starts from 1)")
+    public ResponseEntity<Page<FoodResponseDTO>> getActiveFood(@RequestParam(defaultValue = "1") int page) {
+        Page<FoodResponseDTO> responseFoodPage = foodService.getActiveFood(page);
+        return new ResponseEntity<>(responseFoodPage, HttpStatus.OK);
     }
 
     @PutMapping("/update/all")
     @Operation(summary = "Updating a Food by id", description = "Updating a Food")
-    public ResponseEntity<FoodResponseDTO> updateFoodById(@Valid @RequestParam int id, @RequestBody FoodRequestDTO requestFood) {
+    public ResponseEntity<FoodResponseDTO> updateFoodById(@RequestParam int id, @Valid @RequestBody FoodRequestDTO requestFood) {
         FoodResponseDTO responseFood = foodService.updateFood(id, requestFood);
         return new ResponseEntity<>(responseFood, HttpStatus.OK);
 

@@ -1,13 +1,27 @@
 package com.cts.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public class RegisterDeliveryPartnerRequestDTO {
+	@NotBlank(message = "Email is required")
+    @Email(message = "Email id is invalid format")
     private String email;
+	@NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
+	@NotBlank(message = "Name is required")
+    @Size(min = 2, max = 15, message = "Name must be between 2 and 15 characters")
     private String name;
+	@NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
     private String phno;
+	@NotBlank(message = "Location is required")
+    @Size(min = 2, max = 20, message = "Location must be between 2 and 20 characters")
     private String location;
-//    private boolean status=true;
+
 	public String getEmail() {
 		return email;
 	}
@@ -38,12 +52,6 @@ public class RegisterDeliveryPartnerRequestDTO {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-//	public boolean isStatus() {
-//		return status;
-//	}
-//	public void setStatus(boolean status) {
-//		this.status = status;
-//	}
-    
+
     
 }

@@ -4,13 +4,11 @@ import java.util.List;
 
 import com.cts.dto.CategoryRequestDTO;
 import com.cts.dto.CategoryResponseDTO;
-import com.cts.entity.Food;
 import com.cts.exception.CategoryAlreadyExistException;
 import com.cts.exception.CategoryNotFoundException;
 import com.cts.repository.CategoryRepository;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cts.entity.Category;
@@ -69,8 +67,16 @@ public class CategoryServiceImpl implements CategoryService{
     public CategoryResponseDTO updateCategory(int id,CategoryRequestDTO requestCategory) {
         Category existingCategory=categoryRepo.findById(id).orElseThrow(()->new CategoryNotFoundException("Category not found with id - "+id));
         existingCategory.setName(requestCategory.getName());
+        existingCategory.setImg(requestCategory.getImg());
         existingCategory=categoryRepo.save(existingCategory);
         CategoryResponseDTO responseCategory= mapper.map(existingCategory, CategoryResponseDTO.class);
         return responseCategory;
+    }
+
+    @Override
+    public void deleteCategory(int id) {
+        Category category = categoryRepo.findById(id)
+            .orElseThrow(() -> new CategoryNotFoundException("Category not found with id - " + id));
+        categoryRepo.delete(category);
     }
 }

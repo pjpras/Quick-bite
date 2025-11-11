@@ -1,5 +1,6 @@
 package com.cts.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,10 +15,15 @@ public class Food {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	 @Column(nullable = false, length = 20)
 	private String name;
+
 	private String img;
+	@Column(nullable = false)
 	private double price;
+	@Column(nullable = false, length = 500)
 	private String description;
+	
 	private boolean status;
 	private float avgRating;
 	@ManyToOne

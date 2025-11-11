@@ -1,6 +1,8 @@
 package com.cts.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,7 +12,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(name = "user_id", nullable = false)
     private Long userId;
     
@@ -21,7 +23,7 @@ public class Cart {
     @Column(nullable = false)
     private int quantity;
     
-    @Column(name = "created_at")
+     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
     
     @PrePersist

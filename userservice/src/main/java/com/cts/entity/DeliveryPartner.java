@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue(value = "deliveryPartner")
 
 public class DeliveryPartner extends User{
+	/* 
 	private int rating;
 	
 	public int getRating() {
@@ -16,9 +17,5 @@ public class DeliveryPartner extends User{
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
-	
-	
-
-	
-
+		*/
 }
