@@ -53,7 +53,15 @@ const FeedbackSection = () => {
                     {feedbacks.map((feedback) => (
                         <div key={feedback.id} className="feedback-card">
                             <div className="customer-info">
-                                <img src={feedback.image} alt={feedback.name} className="customer-image" />
+                                <img 
+                                    src={feedback.image} 
+                                    alt={feedback.name} 
+                                    className="customer-image"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(feedback.name)}&background=667eea&color=fff&size=150`;
+                                    }}
+                                />
                                 <div className="customer-details">
                                     <h3>{feedback.name}</h3>
                                     <div className="rating">

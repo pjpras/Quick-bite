@@ -55,36 +55,10 @@
   border-left: 3px solid #10b981;
   font-weight: 600;
 }
-.sidebar-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20px;
-  border-top: 1px solid #e2e8f0;
-  background: #ffffff;
-}
-.user-info {
-  margin-bottom: 16px;
-  font-size: 0.9rem;
-  padding: 16px;
-  background: #f8fafc;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-}
-.user-info span {
-  display: block;
-  font-weight: 600;
-  color: #2d3748;
-  margin-bottom: 4px;
-}
-.user-info small {
-  display: block;
-  color: #718096;
-  margin-bottom: 2px;
-}
 .logout-btn {
-  width: 100%;
+  position: absolute;
+  top: 24px;
+  right: 32px;
   padding: 12px 20px;
   background: #000000 !important;
   border: none;
@@ -101,7 +75,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   text-transform: none;
   letter-spacing: 0.3px;
-  position: relative;
+  z-index: 1001;
   overflow: hidden;
 }
 .logout-btn::before {
@@ -129,8 +103,10 @@
 .admin-content {
   flex: 1;
   padding: 32px;
+  padding-top: 80px;
   overflow-y: auto;
   background: #fafafa;
+  position: relative;
 }
 @media (max-width: 768px) {
   .sidebar {
@@ -147,6 +123,13 @@
   }
   .admin-content {
     padding: 24px;
+    padding-top: 80px;
     width: 100%;
+  }
+  .logout-btn {
+    top: 16px;
+    right: 16px;
+    padding: 10px 16px;
+    font-size: 13px;
   }
 }

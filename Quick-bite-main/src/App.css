@@ -93,3 +93,66 @@ input, select, textarea {
   border-radius: 8px;
   border-left: 4px solid #2e7d32;
 }
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .main-content {
+    padding: 0 30px;
+  }
+  .container {
+    padding: 0 30px;
+  }
+  .user-content {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 0 15px;
+  }
+  .container {
+    padding: 0 15px;
+  }
+  .user-content {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  .loading {
+    font-size: 1rem;
+    min-height: 150px;
+  }
+  .error, .success {
+    padding: 15px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0 10px;
+  }
+  .container {
+    padding: 0 10px;
+  }
+  .user-content {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  .loading {
+    font-size: 0.9rem;
+    min-height: 120px;
+  }
+  .error, .success {
+    padding: 12px;
+    font-size: 13px;
+  }
+  .p-20 {
+    padding: 15px;
+  }
+  .mb-20, .mt-20 {
+    margin-bottom: 15px;
+    margin-top: 15px;
+  }
+}

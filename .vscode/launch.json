@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "FoodeserviceApplication",
+            "request": "launch",
+            "mainClass": "com.cts.FoodeserviceApplication",
+            "projectName": "com.cts-userserviceapp"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-Application<com.cts-28Eureka>",
             "request": "launch",
             "cwd": "${workspaceFolder}",

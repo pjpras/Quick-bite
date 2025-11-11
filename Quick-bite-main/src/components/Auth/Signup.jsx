@@ -14,10 +14,93 @@ const [email,setEmail]=useState("");
 const [phone,setPhone]=useState("");
 const [location,setLocation]=useState("");
 const [password,setPassword]=useState("");
+const [confirmPassword,setConfirmPassword]=useState("");
 const [status,setStatus]=useState("online");
+const [errors, setErrors] = useState({});
+
+
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+const validatePhone = (phone) => {
+  const phoneRegex = /^[0-9]{10}$/;
+  return phoneRegex.test(phone);
+}
+
+const validateName = (name) => {
+  const nameRegex = /^[a-zA-Z\s]{3,}$/;
+  return nameRegex.test(name);
+}
+
+const validatePassword = (password) => {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+  return passwordRegex.test(password);
+}
+
+const validateForm = () => {
+  const newErrors = {};
+
+
+  if (!name.trim()) {
+    newErrors.name = 'Name is required';
+  } else if (name.trim().length < 3) {
+    newErrors.name = 'Name must be at least 3 characters';
+  } else if (!validateName(name)) {
+    newErrors.name = 'Name should contain only letters';
+  }
+
+
+  if (!email.trim()) {
+    newErrors.email = 'Email is required';
+  } else if (!validateEmail(email)) {
+    newErrors.email = 'Please enter a valid email address';
+  }
+
+
+  if (!phone.trim()) {
+    newErrors.phone = 'Phone number is required';
+  } else if (!validatePhone(phone)) {
+    newErrors.phone = 'Phone number must be 10 digits';
+  }
+
+
+  if (!location.trim()) {
+    newErrors.location = 'Location is required';
+  } else if (location.trim().length < 5) {
+    newErrors.location = 'Location must be at least 5 characters';
+  }
+
+
+  if (!password) {
+    newErrors.password = 'Password is required';
+  } else if (password.length < 8) {
+    newErrors.password = 'Password must be at least 8 characters';
+  } else if (!validatePassword(password)) {
+    newErrors.password = 'Password must contain uppercase, lowercase, and number';
+  }
+
+
+  if (!confirmPassword) {
+    newErrors.confirmPassword = 'Please confirm your password';
+  } else if (password !== confirmPassword) {
+    newErrors.confirmPassword = 'Passwords do not match';
+  }
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+}
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+  
+
+  if (!validateForm()) {
+    toast.error('Please fix the validation errors');
+    return;
+  }
+
   try {
     const endpoint = role === "delivery-partner" 
       ? '/app1/api/v1/users/signup/partner' 
@@ -84,10 +167,14 @@ const handleSubmit = async (e) => {
               id="name"
               name="name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              placeholder="Enter your full name"
+              onChange={(e) => {
+                setName(e.target.value);
+                if (errors.name) setErrors({...errors, name: ''});
+              }}
+              className={errors.name ? 'input-error' : ''}
+              placeholder="Enter your full name (min 3 characters)"
             />
+            {errors.name && <span className="error-message">{errors.name}</span>}
           </div>
 
           <div className="form-group">
@@ -97,10 +184,14 @@ const handleSubmit = async (e) => {
               id="email"
               name="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (errors.email) setErrors({...errors, email: ''});
+              }}
+              className={errors.email ? 'input-error' : ''}
               placeholder="Enter your email"
             />
+            {errors.email && <span className="error-message">{errors.email}</span>}
           </div>
 
           {(
@@ -111,10 +202,15 @@ const handleSubmit = async (e) => {
                 id="phone"
                 name="phone"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-                placeholder="Enter your phone number"
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                  if (errors.phone) setErrors({...errors, phone: ''});
+                }}
+                className={errors.phone ? 'input-error' : ''}
+                placeholder="Enter 10-digit phone number"
+                maxLength={10}
               />
+              {errors.phone && <span className="error-message">{errors.phone}</span>}
             </div>
           )}
 
@@ -126,10 +222,14 @@ const handleSubmit = async (e) => {
                 id="location"
                 name="location"
                 value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                required
-                placeholder="Enter your location"
+                onChange={(e) => {
+                  setLocation(e.target.value);
+                  if (errors.location) setErrors({...errors, location: ''});
+                }}
+                className={errors.location ? 'input-error' : ''}
+                placeholder="Enter your location (min 5 characters)"
               />
+              {errors.location && <span className="error-message">{errors.location}</span>}
             </div>
           )}
 
@@ -140,11 +240,31 @@ const handleSubmit = async (e) => {
               id="password"
               name="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Enter your password"
-              minLength={6}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (errors.password) setErrors({...errors, password: ''});
+              }}
+              className={errors.password ? 'input-error' : ''}
+              placeholder="Min 8 chars with uppercase, lowercase & number"
             />
+            {errors.password && <span className="error-message">{errors.password}</span>}
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                if (errors.confirmPassword) setErrors({...errors, confirmPassword: ''});
+              }}
+              className={errors.confirmPassword ? 'input-error' : ''}
+              placeholder="Re-enter your password"
+            />
+            {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
           </div>
 
          

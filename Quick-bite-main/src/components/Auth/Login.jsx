@@ -9,9 +9,44 @@ const Login = () => {
   const navigate = useNavigate()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [errors, setErrors] = useState({})
+
+  // Validation functions
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Email validation
+    if (!email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!validateEmail(email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    // Password validation
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate form before submission
+    if (!validateForm()) {
+      toast.error('Please fix the validation errors');
+      return;
+    }
+
     console.log('Login attempt with:', { email, password });
     
   
@@ -100,10 +135,14 @@ const Login = () => {
               id="email"
               name="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (errors.email) setErrors({...errors, email: ''});
+              }}
+              className={errors.email ? 'input-error' : ''}
               placeholder="Enter your email"
             />
+            {errors.email && <span className="error-message">{errors.email}</span>}
           </div>
 
           <div className="form-group">
@@ -113,10 +152,14 @@ const Login = () => {
               id="password"
               name="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Enter your password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (errors.password) setErrors({...errors, password: ''});
+              }}
+              className={errors.password ? 'input-error' : ''}
+              placeholder="Enter your password (min 8 characters)"
             />
+            {errors.password && <span className="error-message">{errors.password}</span>}
           </div>
 
           <button type="submit" className="auth-button">

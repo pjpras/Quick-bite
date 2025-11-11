@@ -36,18 +36,16 @@ const AdminLayout = ({ children }) => {
             Delivery Partners
           </Link>
         </nav>
-        <div className="sidebar-footer">
-          <button onClick={handleLogout} className="logout-btn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17 7L15.59 8.41L18.17 11H8V13H18.17L15.59 15.59L17 17L22 12L17 7Z" fill="currentColor"/>
-              <path d="M19 19H5V5H19V3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V17H19V19Z" fill="currentColor"/>
-            </svg>
-            Sign Out
-          </button>
-        </div>
       </div>
 
       <div className="admin-content">
+        <button onClick={handleLogout} className="logout-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 7L15.59 8.41L18.17 11H8V13H18.17L15.59 15.59L17 17L22 12L17 7Z" fill="currentColor"/>
+            <path d="M19 19H5V5H19V3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V17H19V19Z" fill="currentColor"/>
+          </svg>
+          Sign Out
+        </button>
         {children}
       </div>
     </div>

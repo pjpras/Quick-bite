@@ -13,23 +13,23 @@ import Signup from './components/Auth/Signup'
 
 import User from './components/User/User'
 import Admin from './components/Admin/Admin'
-import DeliveryPartner from './components/DeliveryPartner/DeliveryPartner'
+import DeliveryPartner from './pages/DeliveryPartner/DeliveryPartner'
 import EditUserInfo from './components/User/EditUserInfo/EditUserInfo'
 
-import About from './components/User/About/About'
-import Contact from './components/User/Contact/Contact'
-import Cart from './components/User/Cart/Cart'
+import About from './pages/User/About/About'
+import Contact from './pages/User/Contact/Contact'
+import Cart from './pages/User/Cart/Cart'
 
 import './App.css'
-import PlaceOrder from './components/User/Placeorder/Placeorder'
-import MyOrders from './components/User/MyOrders/MyOrders'
-import AddProducts from './components/Admin/AddProducts/AddProducts'
-import MenuManagement from './components/Admin/MenuManagement/MenuManagement'
-import ViewOrders from './components/Admin/ViewOrders/ViewOrders'
-import ViewCustomers from './components/Admin/ViewCustomers/ViewCustomers'
-import ViewDeliverypartners from './components/Admin/ViewDeliverypartners/ViewDeliverypartners'
-import EditProducts from './components/Admin/EditProducts/EditProducts'
-import AddCategory from './components/Admin/AddCategory/AddCategory'
+import PlaceOrder from './pages/User/Placeorder/Placeorder'
+import MyOrders from './pages/User/MyOrders/MyOrders'
+import AddProducts from './pages/Admin/AddProducts/AddProducts'
+import MenuManagement from './pages/Admin/MenuManagement/MenuManagement'
+import ViewOrders from './pages/Admin/ViewOrders/ViewOrders'
+import ViewCustomers from './pages/Admin/ViewCustomers/ViewCustomers'
+import ViewDeliverypartners from './pages/Admin/ViewDeliverypartners/ViewDeliverypartners'
+import EditProducts from './pages/Admin/EditProducts/EditProducts'
+import AddCategory from './pages/Admin/AddCategory/AddCategory'
 
 const App = () => {
 
@@ -49,7 +49,8 @@ const App = () => {
         <Route path="/user/cart" element={<Cart/>} />
         <Route path="/user/placeorder" element={<PlaceOrder/>} />
         <Route path="/user/myorders" element={<MyOrders/>} />
-        
+        <Route path="/user/about" element={<About/>} />
+        <Route path="/user/contact" element={<Contact/>} />
         
         
         <Route path="/admin" element={<Admin />} />

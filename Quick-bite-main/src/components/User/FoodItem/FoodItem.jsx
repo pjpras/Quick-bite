@@ -41,6 +41,9 @@ const FoodItem = ({id, name, price, description, image, avgRating, category}) =>
             console.log('Add to cart response:', response.data);
             setItemCount(newCount);
             console.log('Item added to cart successfully');
+            
+            // Dispatch cart updated event
+            window.dispatchEvent(new Event('cartUpdated'));
         } catch (error) {
             console.error('Error adding to cart:', error);
             console.error('Error response:', error.response?.data);
@@ -69,6 +72,9 @@ const FoodItem = ({id, name, price, description, image, avgRating, category}) =>
             }
             
             console.log('Cart updated successfully');
+            
+            // Dispatch cart updated event
+            window.dispatchEvent(new Event('cartUpdated'));
         } catch (error) {
             console.error('Error removing from cart:', error);
             console.error('Error response:', error.response?.data);
