@@ -59,7 +59,7 @@ const AddCategory = () => {
     try {
       const categoryData = {
         name: formData.categoryName.trim(),
-        image: formData.categoryImage.trim()
+        img: formData.categoryImage.trim()
       };
       
       console.log('Sending category data:', categoryData);

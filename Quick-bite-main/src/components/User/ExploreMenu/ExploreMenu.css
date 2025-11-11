@@ -36,8 +36,11 @@
 .explore-menu-item img {
     width: 7.5vw;
     min-width: 80px;
+    height: 7.5vw;
+    min-height: 80px;
     cursor: pointer;
     border-radius: 50%;
+    object-fit: cover;
     transition: transform 0.25s, box-shadow 0.25s;
     box-shadow: 0 2px 8px rgba(60,80,180,0.08);
 }
@@ -102,6 +105,8 @@
     .explore-menu-item img {
         width: 9vw;
         min-width: 70px;
+        height: 9vw;
+        min-height: 70px;
     }
     .explore-menu-item p {
         font-size: 15px;
@@ -129,6 +134,8 @@
     .explore-menu-item img {
         width: 70px;
         min-width: 70px;
+        height: 70px;
+        min-height: 70px;
     }
     .explore-menu-item p {
         font-size: 13px;
@@ -154,6 +161,8 @@
     .explore-menu-item img {
         width: 60px;
         min-width: 60px;
+        height: 60px;
+        min-height: 60px;
     }
     .explore-menu-item p {
         font-size: 12px;

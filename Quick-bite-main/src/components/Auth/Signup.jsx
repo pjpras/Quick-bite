@@ -14,7 +14,6 @@ const [email,setEmail]=useState("");
 const [phone,setPhone]=useState("");
 const [location,setLocation]=useState("");
 const [password,setPassword]=useState("");
-const [confirmPassword,setConfirmPassword]=useState("");
 const [status,setStatus]=useState("online");
 const [errors, setErrors] = useState({});
 
@@ -82,12 +81,6 @@ const validateForm = () => {
   }
 
 
-  if (!confirmPassword) {
-    newErrors.confirmPassword = 'Please confirm your password';
-  } else if (password !== confirmPassword) {
-    newErrors.confirmPassword = 'Passwords do not match';
-  }
-
   setErrors(newErrors);
   return Object.keys(newErrors).length === 0;
 }
@@ -109,10 +102,15 @@ const handleSubmit = async (e) => {
     const payload = {
       name,
       email,
-      phone,
-      address: location,
+      phno: phone,
+      location,
       password
     };
+
+    // LOG: print payload and headers so we can compare with Postman
+    console.log('Signup -> endpoint:', endpoint);
+    console.log('Signup -> payload:', JSON.stringify(payload));
+    console.log('Signup -> axios default headers:', api.defaults?.headers);
     
     const res = await api.post(endpoint, payload);
     
@@ -121,7 +119,11 @@ const handleSubmit = async (e) => {
       navigate('/login');
     }
   } catch (err) {
-    console.error('Signup failed', err);
+    // Detailed logging for debugging gateway 400
+    console.error('Signup failed - message:', err.message);
+    console.error('Signup failed - response status:', err.response?.status);
+    console.error('Signup failed - response data:', err.response?.data);
+    console.error('Signup failed - response headers:', err.response?.headers);
     toast.error(err.response?.data?.message || 'Signup failed. Please try again.');
   }
 }
@@ -248,23 +250,6 @@ const handleSubmit = async (e) => {
               placeholder="Min 8 chars with uppercase, lowercase & number"
             />
             {errors.password && <span className="error-message">{errors.password}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-                if (errors.confirmPassword) setErrors({...errors, confirmPassword: ''});
-              }}
-              className={errors.confirmPassword ? 'input-error' : ''}
-              placeholder="Re-enter your password"
-            />
-            {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
           </div>
 
          

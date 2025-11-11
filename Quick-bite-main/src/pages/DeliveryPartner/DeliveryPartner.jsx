@@ -178,10 +178,10 @@ const DeliveryPartner = () => {
     setUpdateFormData({
       id: partnerData?.id || partnerId,
       email: partnerData?.email || '',
-      password: '', 
       name: partnerData?.name || '',
       phno: partnerData?.phno || '',
-      location: partnerData?.location || ''
+      location: partnerData?.location || '',
+      password: ''
     });
     setShowUpdateModal(true);
   };
@@ -198,12 +198,8 @@ const DeliveryPartner = () => {
     try {
       const token = localStorage.getItem('jwtToken');
       
-      
       console.log('Starting profile update...');
-      console.log('Partner ID:', partnerId);
-      console.log('Current partner data BEFORE update:', partnerData);
-      console.log('Update form data being sent:', JSON.stringify(updateFormData, null, 2));
-      console.log('JWT Token exists:', !!token);
+      console.log('Update form data:', updateFormData);
     
       if (!token) {
         alert('Authentication token not found. Please login again.');
@@ -216,31 +212,36 @@ const DeliveryPartner = () => {
         return;
       }
 
-     
+      // Prepare data matching backend API structure
       const dataToSend = { 
-        ...updateFormData,
-       
-        phone: updateFormData.phno, 
-        phoneNumber: updateFormData.phno, 
-        address: updateFormData.location, 
+        email: updateFormData.email,
+        name: updateFormData.name,
+        phno: updateFormData.phno,
+        location: updateFormData.location,
+        password: updateFormData.password
       };
       
-      if (!dataToSend.password || dataToSend.password.trim() === '') {
-        delete dataToSend.password;
-      }
-      
-      console.log('Final data being sent to API (with alternate field names):', JSON.stringify(dataToSend, null, 2));
+      console.log('Sending data to API:', JSON.stringify(dataToSend, null, 2));
 
-      
       let response;
-      let apiUrl;
       
       try {
-        apiUrl = `/app1/api/v1/users/deliverypartner/update`;
-        response = await api.put(apiUrl, dataToSend);
+        response = await api.put('/app1/api/v1/users/deliverypartner/update', dataToSend, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
       } catch (error1) {
-        console.error('Error details:', error1.response?.data);
-        alert('Failed to update profile. Please try again.');
+        console.error('Full error object:', error1);
+        console.error('Error response status:', error1.response?.status);
+        console.error('Error response data:', error1.response?.data);
+        console.error('Error response headers:', error1.response?.headers);
+        
+        const errorMsg = error1.response?.data?.errorMessage || 
+                        error1.response?.data?.message || 
+                        error1.response?.data?.error ||
+                        error1.message;
+        alert(`Failed to update profile: ${errorMsg}`);
         return;
       }
 
@@ -424,11 +425,17 @@ const DeliveryPartner = () => {
                   className="action-btn pickup-btn"
                   onClick={async () => {
                     try {
-                      await api.put(`/app2/api/v1/orders/status/${order.id}?newStatus=OUT`);
+                      console.log('Marking order as picked up, orderId:', order.id);
+                      const response = await api.patch(`/app2/api/v1/orders/Deliverypartner/outfordelivery?orderId=${order.id}`);
+                      console.log('Response:', response.data);
+                      alert('Order marked as picked up successfully!');
                       fetchAssignedOrders();
                     } catch (err) {
-                      console.error('Failed to update status', err);
-                      
+                      console.error('Failed to update status - Full error:', err);
+                      console.error('Error response data:', err.response?.data);
+                      console.error('Error response status:', err.response?.status);
+                      console.error('Error message:', err.message);
+                      alert(`Failed to update order: ${err.response?.data?.message || err.message}`);
                     }
                   }}
                 >
@@ -576,10 +583,10 @@ const DeliveryPartner = () => {
                   setUpdateFormData({
                     id: '',
                     email: '',
-                    password: '',
                     name: '',
                     phno: '',
-                    location: ''
+                    location: '',
+                    password: ''
                   });
                 }}
               >
@@ -640,14 +647,15 @@ const DeliveryPartner = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="password">New Password (Optional)</label>
+                  <label htmlFor="password">Password *</label>
                   <input
                     type="password"
                     id="password"
                     name="password"
                     value={updateFormData.password}
                     onChange={handleUpdateFormChange}
-                    placeholder="Leave blank to keep current password"
+                    placeholder="Enter your password"
+                    required
                   />
                 </div>
 
@@ -660,10 +668,10 @@ const DeliveryPartner = () => {
                       setUpdateFormData({
                         id: '',
                         email: '',
-                        password: '',
                         name: '',
                         phno: '',
-                        location: ''
+                        location: '',
+                        password: ''
                       });
                     }}
                   >

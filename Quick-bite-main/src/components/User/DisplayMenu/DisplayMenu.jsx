@@ -18,23 +18,23 @@ const DisplayMenu = ({ category }) => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      // Call API with page and size parameters
-      // Backend will return: { content: [...items], totalPages: number, currentPage: number }
-      const res = await api.get(`/app2/api/v1/food/active?page=${currentPage - 1}&size=${ITEMS_PER_PAGE}`);
-      console.log('Fetched active food items:', res.data);
+      // Send the page number directly (1 for page 1, 2 for page 2, etc.)
+      console.log(`Fetching page ${currentPage}`);
+      const res = await api.get(`/app2/api/v1/food/active?page=${currentPage}`);
+      console.log('API Response:', res.data);
+      console.log('Content array:', res.data.content);
+      console.log('Total pages:', res.data.totalPages);
+      console.log('Total elements:', res.data.totalElements);
       
-      // When backend pagination is implemented, use response data directly:
-      // setFoodList(res.data.content);
-      // setTotalPages(res.data.totalPages);
-      
-      // Temporary: use all data until backend pagination is ready
-      setFoodList(res.data);
-      setTotalPages(5); // Hardcoded for now, backend will provide this
+      // Use paginated response from backend
+      setFoodList(res.data.content || []);
+      setTotalPages(res.data.totalPages || 1);
     } catch (err) {
       console.error('Failed to fetch products', err);
       console.error('Error details:', err.response?.data);
       console.error('Error status:', err.response?.status);
       setFoodList([]);
+      setTotalPages(1);
     } finally {
       setLoading(false);
     }
@@ -88,7 +88,7 @@ const DisplayMenu = ({ category }) => {
         >
           Prev
         </button>
-        {[1, 2, 3, 4, 5].map((pageNum) => (
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
           <button
             key={pageNum}
             className={currentPage === pageNum ? 'active' : ''}

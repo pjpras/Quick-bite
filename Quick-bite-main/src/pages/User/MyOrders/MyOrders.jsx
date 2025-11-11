@@ -162,44 +162,21 @@ const MyOrders = () => {
                 return;
             }
 
-          
-
-            
-            let response;
-            try {
-             
-                response = await api.put(`/app2/api/v1/orders/cancel/${orderId}`, {}, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-            } catch (putError) {
-                try {
-                   
-                    response = await api.patch(`/app2/api/v1/orders/cancel/${orderId}`, {}, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-                } catch (patchError) {
-                  
-                    response = await api.delete(`/app2/api/v1/orders/cancel/${orderId}`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
+            const response = await api.patch(`/app2/api/v1/orders/cancel/${orderId}`, {}, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
-            }
+            });
 
             if (response.status === 200 || response.status === 204) {
                 toast.success('Order cancelled successfully!');
-           
                 fetchOrders();
             }
         } catch (error) {
             if (error.response?.status === 500) {
-                toast.error('Server error. Please try again or contact support.');
+                // Show the specific error message from backend for 500 errors
+                const errorMessage = error.response?.data?.errorMessage || error.response?.data?.message || 'Server error. Please try again or contact support.';
+                toast.error(errorMessage);
             } else if (error.response?.status === 404) {
                 toast.error('Order not found or already processed.');
             } else if (error.response?.status === 403) {
@@ -370,7 +347,7 @@ const MyOrders = () => {
                                                     <p className="order-qty">Total Items: {order?.totalQty || 0}</p>
                                                 </div>
                                                 <div className="order-actions">
-                                                    {(order.orderStatus?.toUpperCase() === "PENDING" || order.orderStatus?.toUpperCase() === "OUT") && (
+                                                    {order.orderStatus?.toUpperCase() === "PENDING" && (
                                                         <button
                                                             className="cancel-btn"
                                                             onClick={() => {
