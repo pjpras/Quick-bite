@@ -59,9 +59,9 @@ public class AdminOrderService {
             throw new UnauthorizedActionException("User with ID " + partnerId + " is not a Delivery Partner.");
         }
         order.setDeliveryPartner(partnerId);
-        if (order.getOrderStatus() == OrderStatus.PENDING) {
-            order.setOrderStatus(OrderStatus.OUT);
-        }
+        // if (order.getOrderStatus() == OrderStatus.PENDING) {
+        //     order.setOrderStatus(OrderStatus.OUT);
+        // }
 
         Order savedOrder = orderRepository.save(order);
         authServiceClient.updateDeliveryPartnerAvailability(partnerId, false);

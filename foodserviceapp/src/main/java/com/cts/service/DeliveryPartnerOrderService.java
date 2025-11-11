@@ -54,7 +54,9 @@ public class DeliveryPartnerOrderService {
             throw new UnauthorizedActionException("Invalid OTP. Order cannot be marked as delivered.");
         }
         
-
+        if(order.getOrderStatus() != OrderStatus.OUT) {
+            throw new IllegalStateException("Order Cannot be marked delivered at this stage.");
+        }
         order.setOrderStatus(OrderStatus.DELIVERED);
         Order savedOrder = orderRepository.save(order);
         authServiceClient.updateDeliveryPartnerAvailability(order.getDeliveryPartner(), true);
@@ -65,7 +67,24 @@ public class DeliveryPartnerOrderService {
         return mapper.map(savedOrder, OrderPlacementResponseDTO.class);
     }
     
-
+    public OrderPlacementResponseDTO markOrderOutForDelivery(int orderId) {
+        com.cts.model.User partner = commonService.getCurrentAuthenticatedUser();
+        if (!(partner instanceof com.cts.model.DeliveryPartner)) {
+            throw new UnauthorizedActionException("Only Delivery Partners can mark orders as out for delivery.");
+        }
+        Order order = commonService.getOrderById(orderId);
+        if (order.getDeliveryPartner() == 0 || 
+            order.getDeliveryPartner() != partner.getId()) {
+            throw new UnauthorizedActionException("You can only update orders assigned to you.");
+        }
+        if(order.getOrderStatus() != OrderStatus.PENDING) {
+            throw new IllegalStateException("Order Cannot be marked out for delivery at this stage.");
+        }
+        order.setOrderStatus(OrderStatus.OUT);
+        Order savedOrder = orderRepository.save(order);
+          
+        return mapper.map(savedOrder, OrderPlacementResponseDTO.class);
+    }
 
     public List<OrderResponseDTO> getMyAssignedOrders() {
         com.cts.model.User partner = commonService.getCurrentAuthenticatedUser();

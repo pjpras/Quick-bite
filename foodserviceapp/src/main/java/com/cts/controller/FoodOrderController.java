@@ -8,6 +8,9 @@ import com.cts.enums.OrderStatus;
 import com.cts.service.CustomerOrderService;
 import com.cts.service.AdminOrderService;
 import com.cts.service.DeliveryPartnerOrderService;
+
+import jakarta.validation.Valid;
+
 import com.cts.service.CommonOrderService;
 
 import org.springframework.http.HttpStatus;
@@ -42,7 +45,7 @@ public class FoodOrderController {
 
 
     @PostMapping("/place")
-    public ResponseEntity<OrderPlacementResponseDTO> placeOrder(@RequestBody OrderPlacementRequestDTO request) {
+    public ResponseEntity<OrderPlacementResponseDTO> placeOrder(@Valid @RequestBody OrderPlacementRequestDTO request) {
         OrderPlacementResponseDTO response = customerOrderService.placeOrder(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -96,6 +99,14 @@ public class FoodOrderController {
         @RequestParam String otp
     ) {
         OrderPlacementResponseDTO completedOrder = deliveryPartnerOrderService.markOrderCompleted(orderId, otp);
+        return ResponseEntity.ok(completedOrder);
+    }
+
+     @PatchMapping("/Deliverypartner/outfordelivery")
+    public ResponseEntity<OrderPlacementResponseDTO> markOrderOutForDelivery(
+        @RequestParam int orderId
+    ) {
+        OrderPlacementResponseDTO completedOrder = deliveryPartnerOrderService.markOrderOutForDelivery(orderId);
         return ResponseEntity.ok(completedOrder);
     }
 }

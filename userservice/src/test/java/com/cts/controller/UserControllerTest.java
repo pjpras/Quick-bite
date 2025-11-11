@@ -35,7 +35,7 @@ public class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Initialize test data
+        
         loginRequestDTO = new LoginRequestDTO();
         loginRequestDTO.setEmail("test@example.com");
         loginRequestDTO.setPassword("password123");
@@ -50,13 +50,12 @@ public class UserControllerTest {
 
     @Test
     void loginUser_Success() {
-        // Arrange
+       
         when(authService.loginUser(any(LoginRequestDTO.class))).thenReturn(loginResponseDTO);
 
-        // Act
+       
         ResponseEntity<LoginResponseDTO> response = userController.loginUser(loginRequestDTO);
 
-        // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         
