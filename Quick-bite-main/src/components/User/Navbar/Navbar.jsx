@@ -27,7 +27,7 @@ const Navbar = () => {
         getCurrentUser();
         loadCartCount();
         
-        // Listen for cart updates
+       
         const handleCartUpdate = () => {
             loadCartCount();
         };

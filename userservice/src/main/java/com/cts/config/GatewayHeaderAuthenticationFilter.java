@@ -31,7 +31,7 @@ public class GatewayHeaderAuthenticationFilter extends OncePerRequestFilter {
         String userId = request.getHeader(HEADER_USER_ID);
 
         if (userEmail != null && userRole != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            System.out.println("🔐 UserService: Authenticating user from Gateway/Feign headers");
+            System.out.println("UserService: Authenticating user from Gateway/Feign headers");
             System.out.println("   Email: " + userEmail);
             System.out.println("   Role: " + userRole);
             System.out.println("   UserId: " + userId);
@@ -47,9 +47,9 @@ public class GatewayHeaderAuthenticationFilter extends OncePerRequestFilter {
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authToken);
             
-            System.out.println("✅ UserService: Authentication set successfully for " + request.getRequestURI());
+            System.out.println("UserService: Authentication set successfully for " + request.getRequestURI());
         } else if (userEmail == null || userRole == null) {
-            System.out.println("⚠️ UserService: Missing X-User headers for " + request.getRequestURI());
+            System.out.println("UserService: Missing X-User headers for " + request.getRequestURI());
             System.out.println("   X-User-Email: " + userEmail);
             System.out.println("   X-User-Role: " + userRole);
         }

@@ -23,7 +23,7 @@ const PlaceOrder = () => {
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Get discount info from navigation state (from Cart)
+
     const discountPercentage = location.state?.discountPercentage || 0;
     const isPromocodeApplied = location.state?.isPromocodeApplied || false;
     const promocode = location.state?.promocode || '';
@@ -49,11 +49,11 @@ const PlaceOrder = () => {
     const totalPrice = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
     const deliverycharge = 30;
 
-    // Use integer percentage (e.g., 10 for 10%)
+    
     const discountAmount = (discountPercentage > 0 ? (discountPercentage / 100) * totalPrice : 0);
     const finalTotal = totalPrice + deliverycharge - discountAmount;
 
-    // Validation functions
+    
     const validateName = (name) => {
         const nameRegex = /^[a-zA-Z\s]{2,}$/;
         return nameRegex.test(name);
@@ -171,14 +171,13 @@ const PlaceOrder = () => {
             console.error('Error response data:', err.response?.data);
             console.error('Error status:', err.response?.status);
             
-            // Extract error message from various possible formats
+            
             let errorMessage = 'Order placement failed. Please try again.';
             
             if (err.response?.data) {
                 if (typeof err.response.data === 'string') {
                     errorMessage = err.response.data;
                 } else if (err.response.data.errorMessage) {
-                    // Backend returns errorMessage property
                     errorMessage = err.response.data.errorMessage;
                 } else if (err.response.data.message) {
                     errorMessage = err.response.data.message;
@@ -311,7 +310,7 @@ const PlaceOrder = () => {
                 <div className="place-order-right">
                     <div className="cart-total">
                         <h2>Cart Totals</h2>
-                        {/* No promocode section here */}
+          
                         <div>
                             <div className="cart-total-details">
                                 <p>Subtotal</p>

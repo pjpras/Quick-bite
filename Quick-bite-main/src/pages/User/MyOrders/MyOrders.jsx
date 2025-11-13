@@ -51,11 +51,9 @@ const MyOrders = () => {
             const validOrders = (response.data || [])
                 .filter(order => order !== null && order !== undefined && order.id)
                 .sort((a, b) => {
-                    // Handle cases where orderDate might be null or undefined
                     const dateA = a.orderDate ? new Date(a.orderDate) : new Date(0);
                     const dateB = b.orderDate ? new Date(b.orderDate) : new Date(0);
                     
-                    // Sort in descending order (newest first)
                     return dateB - dateA;
                 });
 
@@ -129,7 +127,7 @@ const MyOrders = () => {
         try {
             const response = await api.post(`/app2/api/v1/feedback/food/${foodId}`, {
                 foodRating: parseInt(rating),
-                orderId: parseInt(orderId)  // 
+                orderId: parseInt(orderId)  
             });
 
             if (response.status === 200 || response.status === 201) {
@@ -174,7 +172,6 @@ const MyOrders = () => {
             }
         } catch (error) {
             if (error.response?.status === 500) {
-                // Show the specific error message from backend for 500 errors
                 const errorMessage = error.response?.data?.errorMessage || error.response?.data?.message || 'Server error. Please try again or contact support.';
                 toast.error(errorMessage);
             } else if (error.response?.status === 404) {

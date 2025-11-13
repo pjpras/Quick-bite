@@ -33,12 +33,12 @@ const Cart = () => {
 
     const handleRemoveFromCart = async (cartItemId, foodId) => {
         try {
-            // Use the correct endpoint: /remove/{foodId}
+            
             const response = await api.delete(`/app2/api/v1/cart/remove/${foodId}`);
             toast.success('Item removed from cart');
-            // Reload the cart after removal
+            
             loadCart();
-            // Dispatch event to update cart count in navbar
+          
             window.dispatchEvent(new Event('cartUpdated'));
         } catch (error) {
             console.error('Error removing item from cart:', error);
