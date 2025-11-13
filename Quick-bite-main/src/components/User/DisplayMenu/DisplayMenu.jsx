@@ -10,6 +10,12 @@ const DisplayMenu = ({ category }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [allCategoryFoods, setAllCategoryFoods] = useState([]); // Store all foods for category filtering
+
+  // Reset to page 1 when category changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [category]);
 
   useEffect(() => {
     fetchProducts();
@@ -18,17 +24,58 @@ const DisplayMenu = ({ category }) => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      // Send the page number directly (1 for page 1, 2 for page 2, etc.)
-      console.log(`Fetching page ${currentPage}`);
-      const res = await api.get(`/app2/api/v1/food/active?page=${currentPage}`);
-      console.log('API Response:', res.data);
-      console.log('Content array:', res.data.content);
-      console.log('Total pages:', res.data.totalPages);
-      console.log('Total elements:', res.data.totalElements);
+      console.log(`Fetching page ${currentPage}, category: ${category}`);
       
-      // Use paginated response from backend
-      setFoodList(res.data.content || []);
-      setTotalPages(res.data.totalPages || 1);
+      // Use different endpoints based on category selection
+      if (category && category !== 'all') {
+        // Fetch all foods for category if not already fetched or if page is 1
+        if (currentPage === 1 || allCategoryFoods.length === 0) {
+          const url = `/app2/api/v1/food/category?category=${encodeURIComponent(category)}`;
+          console.log('API URL (category filter):', url);
+          const res = await api.get(url);
+          console.log('API Response:', res.data);
+          
+          // Category endpoint returns array directly, not paginated
+          const foods = Array.isArray(res.data) ? res.data : [];
+          setAllCategoryFoods(foods);
+          
+          // Calculate pagination
+          const pageSize = 8;
+          const totalPgs = Math.ceil(foods.length / pageSize);
+          const startIdx = (currentPage - 1) * pageSize;
+          const endIdx = startIdx + pageSize;
+          const paginatedFoods = foods.slice(startIdx, endIdx);
+          
+          setFoodList(paginatedFoods);
+          setTotalPages(totalPgs);
+          console.log('Filtered foods:', foods.length, 'Total pages:', totalPgs, 'Showing:', paginatedFoods.length);
+        } else {
+          // Use already fetched category foods for pagination
+          const pageSize = 8;
+          const startIdx = (currentPage - 1) * pageSize;
+          const endIdx = startIdx + pageSize;
+          const paginatedFoods = allCategoryFoods.slice(startIdx, endIdx);
+          
+          setFoodList(paginatedFoods);
+          setTotalPages(Math.ceil(allCategoryFoods.length / pageSize));
+          console.log('Using cached category foods, showing page:', currentPage);
+        }
+      } else {
+        // Clear category cache when showing all
+        setAllCategoryFoods([]);
+        
+        // Use active endpoint with pagination for all foods
+        const url = `/app2/api/v1/food/active?page=${currentPage}`;
+        console.log('API URL (all foods):', url);
+        const res = await api.get(url);
+        console.log('API Response:', res.data);
+        console.log('Content array:', res.data.content);
+        console.log('Total pages:', res.data.totalPages);
+        
+        // Use paginated response from backend
+        setFoodList(res.data.content || []);
+        setTotalPages(res.data.totalPages || 1);
+      }
     } catch (err) {
       console.error('Failed to fetch products', err);
       console.error('Error details:', err.response?.data);

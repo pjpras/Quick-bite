@@ -74,7 +74,7 @@ const Navbar = () => {
         try {
             setIsSearching(true);
             
-            // Try to get all foods (use the base endpoint which gets all foods)
+            
             let response;
             let apiError = null;
             
@@ -82,19 +82,19 @@ const Navbar = () => {
                 response = await api.get('/app2/api/v1/food');
             } catch (err) {
                 apiError = err;
-                // If that fails, try the active endpoint
+               
                 console.log('First endpoint failed, trying active endpoint...');
                 try {
                     response = await api.get('/app2/api/v1/food/active');
-                    apiError = null; // Clear error if second attempt succeeds
+                    apiError = null; 
                 } catch (err2) {
                     apiError = err2;
                 }
             }
             
-            // If we got a response, filter the results
+            
             if (response && response.data) {
-                // Filter results based on search query (case-insensitive partial match)
+               
                 const filteredResults = (response.data || []).filter(food => 
                     food.name.toLowerCase().includes(query.toLowerCase()) ||
                     (food.description && food.description.toLowerCase().includes(query.toLowerCase())) ||
@@ -107,7 +107,6 @@ const Navbar = () => {
                 
                 setSearchResults(filteredResults);
             } else if (apiError) {
-                // Both endpoints failed
                 throw apiError;
             }
             
@@ -117,7 +116,6 @@ const Navbar = () => {
             console.error('Error details:', error.response?.data);
             
             if (error.response?.status === 500) {
-                // Check if it's a "no foods found" error
                 const errorMessage = error.response?.data?.message || error.response?.data || '';
                 if (errorMessage.toLowerCase().includes('no') && errorMessage.toLowerCase().includes('food')) {
                     toast.info('No food items available yet. Please ask admin to add some foods.');
@@ -141,14 +139,13 @@ const Navbar = () => {
             const newCount = currentCount + 1;
             
             if (currentCount === 0) {
-                // Add new item to cart
+               
                 await api.post('/app2/api/v1/cart/add', {
                     foodId: foodId,
                     quantity: 1
                 });
                 toast.success('Item added to cart!');
             } else {
-                // Update existing item quantity
                 await api.patch(`/app2/api/v1/cart/update/${foodId}?quantity=${newCount}`);
             }
             
@@ -157,7 +154,7 @@ const Navbar = () => {
                 [foodId]: newCount
             }));
             
-            // Update cart count
+    
             loadCartCount();
             window.dispatchEvent(new Event('cartUpdated'));
         } catch (error) {
@@ -174,11 +171,11 @@ const Navbar = () => {
             const newCount = currentCount - 1;
             
             if (newCount === 0) {
-                // Remove item from cart
+                
                 await api.delete(`/app2/api/v1/cart/remove/${foodId}`);
                 toast.info('Item removed from cart');
             } else {
-                // Update quantity
+                
                 await api.patch(`/app2/api/v1/cart/update/${foodId}?quantity=${newCount}`);
             }
             
@@ -187,7 +184,7 @@ const Navbar = () => {
                 [foodId]: newCount
             }));
             
-            // Update cart count
+            
             loadCartCount();
             window.dispatchEvent(new Event('cartUpdated'));
         } catch (error) {
@@ -243,7 +240,7 @@ const Navbar = () => {
 
         </div>
 
-        {/* Mobile Menu Toggle Button */}
+        
         <button className="mobile-menu-toggle" onClick={() => setShowMobileMenu(!showMobileMenu)}>
             <div className="hamburger-icon">
                 <span></span>
@@ -253,7 +250,7 @@ const Navbar = () => {
             <span className="menu-text">Menu</span>
         </button>
 
-        {/* Mobile Menu */}
+        
         {showMobileMenu && (
             <div className="mobile-menu-overlay" onClick={() => setShowMobileMenu(false)}>
                 <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
@@ -298,7 +295,7 @@ const Navbar = () => {
             </div>
         )}
 
-        {/* Search Modal */}
+        
         {showSearch && (
             <div className="search-overlay" onClick={handleCloseSearch}>
                 <div className="search-box" onClick={(e) => e.stopPropagation()}>
