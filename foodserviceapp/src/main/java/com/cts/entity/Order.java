@@ -6,9 +6,17 @@ import java.util.List;
 
 import com.cts.enums.OrderStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name="orders")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,68 +47,4 @@ public class Order {
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<OrderItem> orderItems;
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public Integer getTotalQty() {
-		return totalQty;
-	}
-	public void setTotalQty(Integer totalQty) {
-		this.totalQty = totalQty;
-	}
-	public Double getTotalPrice() {
-		return totalPrice;
-	}
-	public void setTotalPrice(Double totalPrice) {
-		this.totalPrice = totalPrice;
-	}
-	public LocalDate getOrderDate() {
-		return orderDate;
-	}
-	public void setOrderDate(LocalDate orderDate) {
-		this.orderDate = orderDate;
-	}
-	public LocalTime getOrderTime() {
-		return orderTime;
-	}
-	public void setOrderTime(LocalTime orderTime) {
-		this.orderTime = orderTime;
-	}
-	public OrderStatus getOrderStatus() {
-		return orderStatus;
-	}
-	public void setOrderStatus(OrderStatus orderStatus) {
-		this.orderStatus = orderStatus;
-	}
-	public String getOtp() {
-		return otp;
-	}
-	public void setOtp(String otp) {
-		this.otp = otp;
-	}
-	
-	public long getCustomer() {
-		return customer;
-	}
-	public void setCustomer(long customer) {
-		this.customer = customer;
-	}
-	public long getDeliveryPartner() {
-		return deliveryPartner;
-	}
-	public void setDeliveryPartner(long deliveryPartner) {
-		this.deliveryPartner = deliveryPartner;
-	}
-	public List<OrderItem> getOrderItems() {
-		return orderItems;
-	}
-	public void setOrderItems(List<OrderItem> orderItems) {
-		this.orderItems = orderItems;
-	}
-	
-	
-
 }
