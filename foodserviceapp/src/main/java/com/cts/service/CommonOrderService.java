@@ -85,7 +85,7 @@ public class CommonOrderService {
     
 
     public List<Order> getOrdersByDeliveryPartner(com.cts.model.User partner) {
-        return orderRepository.findByDeliveryPartner(partner.getId());
+        return orderRepository.findByDeliveryPartnerOrderByOrderDateDesc(partner.getId());
     }
     
    

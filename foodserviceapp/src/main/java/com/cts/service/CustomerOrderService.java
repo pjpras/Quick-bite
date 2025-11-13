@@ -53,6 +53,15 @@ public class CustomerOrderService {
 
 	@Transactional
     public OrderPlacementResponseDTO placeOrder(OrderPlacementRequestDTO request) {
+        // checking the out of stock status of each food item in the order
+        request.getItems().forEach(itemDto -> {
+            Food food = foodRepository.findById(itemDto.getFoodId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Food not found with ID: " + itemDto.getFoodId()));
+            if (food.isStatus() == false) {
+                throw new IllegalStateException("Food item " + food.getName() + " is out of stock.");
+            }
+        });
+
         com.cts.model.User customer = commonService.getCurrentAuthenticatedUser();
         if (!(customer instanceof com.cts.model.Customer)) {
             throw new UnauthorizedActionException("Only customers can place orders.");
