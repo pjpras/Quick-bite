@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// API Gateway URL - routes requests to appropriate microservices
 const API_BASE_URL = 'http://localhost:9093';
 
 
@@ -14,7 +13,6 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    // Public endpoints that don't require authentication
     const publicEndpoints = [
       '/app1/api/v1/users/login', 
       '/app1/api/v1/users/signup/customer', 

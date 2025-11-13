@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import './DisplayMenu.css';
-import FoodItem from '../FoodItem/FoodItem';
-import api from '../../../config/api';
+import React, { useState, useEffect } from "react";
+import "./DisplayMenu.css";
+import FoodItem from "../FoodItem/FoodItem";
+import api from "../../../config/api";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -10,9 +10,8 @@ const DisplayMenu = ({ category }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [allCategoryFoods, setAllCategoryFoods] = useState([]); // Store all foods for category filtering
+  const [allCategoryFoods, setAllCategoryFoods] = useState([]);
 
-  // Reset to page 1 when category changes
   useEffect(() => {
     setCurrentPage(1);
   }, [category]);
@@ -25,61 +24,65 @@ const DisplayMenu = ({ category }) => {
     try {
       setLoading(true);
       console.log(`Fetching page ${currentPage}, category: ${category}`);
-      
-      // Use different endpoints based on category selection
-      if (category && category !== 'all') {
-        // Fetch all foods for category if not already fetched or if page is 1
+
+      if (category && category !== "all") {
         if (currentPage === 1 || allCategoryFoods.length === 0) {
-          const url = `/app2/api/v1/food/category?category=${encodeURIComponent(category)}`;
-          console.log('API URL (category filter):', url);
+          const url = `/app2/api/v1/food/category?category=${encodeURIComponent(
+            category
+          )}`;
+          console.log("API URL (category filter):", url);
           const res = await api.get(url);
-          console.log('API Response:', res.data);
-          
-          // Category endpoint returns array directly, not paginated
+          console.log("API Response:", res.data);
+
           const foods = Array.isArray(res.data) ? res.data : [];
           setAllCategoryFoods(foods);
-          
-          // Calculate pagination
+
           const pageSize = 8;
           const totalPgs = Math.ceil(foods.length / pageSize);
           const startIdx = (currentPage - 1) * pageSize;
           const endIdx = startIdx + pageSize;
           const paginatedFoods = foods.slice(startIdx, endIdx);
-          
+
           setFoodList(paginatedFoods);
           setTotalPages(totalPgs);
-          console.log('Filtered foods:', foods.length, 'Total pages:', totalPgs, 'Showing:', paginatedFoods.length);
+          console.log(
+            "Filtered foods:",
+            foods.length,
+            "Total pages:",
+            totalPgs,
+            "Showing:",
+            paginatedFoods.length
+          );
         } else {
-          // Use already fetched category foods for pagination
           const pageSize = 8;
           const startIdx = (currentPage - 1) * pageSize;
           const endIdx = startIdx + pageSize;
           const paginatedFoods = allCategoryFoods.slice(startIdx, endIdx);
-          
+
           setFoodList(paginatedFoods);
           setTotalPages(Math.ceil(allCategoryFoods.length / pageSize));
-          console.log('Using cached category foods, showing page:', currentPage);
+          console.log(
+            "Using cached category foods, showing page:",
+            currentPage
+          );
         }
       } else {
-        // Clear category cache when showing all
         setAllCategoryFoods([]);
-        
-        // Use active endpoint with pagination for all foods
+
         const url = `/app2/api/v1/food/active?page=${currentPage}`;
-        console.log('API URL (all foods):', url);
+        console.log("API URL (all foods):", url);
         const res = await api.get(url);
-        console.log('API Response:', res.data);
-        console.log('Content array:', res.data.content);
-        console.log('Total pages:', res.data.totalPages);
-        
-        // Use paginated response from backend
+        console.log("API Response:", res.data);
+        console.log("Content array:", res.data.content);
+        console.log("Total pages:", res.data.totalPages);
+
         setFoodList(res.data.content || []);
         setTotalPages(res.data.totalPages || 1);
       }
     } catch (err) {
-      console.error('Failed to fetch products', err);
-      console.error('Error details:', err.response?.data);
-      console.error('Error status:', err.response?.status);
+      console.error("Failed to fetch products", err);
+      console.error("Error details:", err.response?.data);
+      console.error("Error status:", err.response?.status);
       setFoodList([]);
       setTotalPages(1);
     } finally {
@@ -89,7 +92,7 @@ const DisplayMenu = ({ category }) => {
 
   if (loading) {
     return (
-      <div className='food-display' id='food-display'>
+      <div className="food-display" id="food-display">
         <h2>Loading menu...</h2>
       </div>
     );
@@ -97,7 +100,7 @@ const DisplayMenu = ({ category }) => {
 
   if (foodList.length === 0) {
     return (
-      <div className='food-display' id='food-display'>
+      <div className="food-display" id="food-display">
         <h2>No food items available</h2>
         <p>Please check back later or contact support.</p>
       </div>
@@ -106,14 +109,15 @@ const DisplayMenu = ({ category }) => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    // Scroll to top of food display
-    document.getElementById('food-display')?.scrollIntoView({ behavior: 'smooth' });
+    document
+      .getElementById("food-display")
+      ?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <div className='food-display' id='food-display'>
+    <div className="food-display" id="food-display">
       <h2>The best dishes from our restaurant</h2>
-      <div className='food-display-list'>
+      <div className="food-display-list">
         {foodList.map((item) => (
           <FoodItem
             key={item.id}
@@ -138,7 +142,7 @@ const DisplayMenu = ({ category }) => {
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
           <button
             key={pageNum}
-            className={currentPage === pageNum ? 'active' : ''}
+            className={currentPage === pageNum ? "active" : ""}
             onClick={() => handlePageChange(pageNum)}
           >
             {pageNum}

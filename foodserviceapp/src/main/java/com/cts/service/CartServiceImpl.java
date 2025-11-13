@@ -21,36 +21,36 @@ import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
-    
+
     @Autowired
     private CartRepository cartRepository;
-    
+
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private FoodRepository foodRepository;
-    
+
     @Override
     @Transactional
     public CartResponseDTO addToCart(Long userId, CartRequestDTO cartRequestDto) {
-        System.out.println("CartService - Adding to cart - User ID: " + userId + ", Food ID: " + cartRequestDto.getFoodId());
-        
-        // Validate user exists via auth service
+        System.out.println(
+                "CartService - Adding to cart - User ID: " + userId + ", Food ID: " + cartRequestDto.getFoodId());
+
         com.cts.model.User user = userService.getUserById(userId);
         if (user == null) {
             System.err.println("User not found with id: " + userId);
             throw new ResourceNotFoundException("User not found with id: " + userId);
         }
-        
+
         System.out.println("User found: " + user.getName());
-        
+
         Food food = foodRepository.findById(cartRequestDto.getFoodId())
                 .orElseThrow(() -> {
                     System.err.println("Food not found with id: " + cartRequestDto.getFoodId());
                     return new ResourceNotFoundException("Food not found with id: " + cartRequestDto.getFoodId());
                 });
-        
+
         System.out.println("Food found: " + food.getName());
 
         if (!food.isStatus()) {
@@ -59,7 +59,7 @@ public class CartServiceImpl implements CartService {
         }
 
         Optional<Cart> existingCart = cartRepository.findByUserIdAndFoodId(userId, cartRequestDto.getFoodId());
-        
+
         Cart cart;
         if (existingCart.isPresent()) {
             System.out.println("Updating existing cart item");
@@ -74,36 +74,36 @@ public class CartServiceImpl implements CartService {
             cart.setFood(food);
             cart.setQuantity(cartRequestDto.getQuantity());
         }
-        
+
         cart = cartRepository.save(cart);
         System.out.println("Cart saved successfully with ID: " + cart.getId());
         return convertToDto(cart);
     }
-    
+
     @Override
     @Transactional
     public CartResponseDTO updateQuantity(Long userId, int foodId, int quantity) {
         Cart cart = cartRepository.findByUserIdAndFoodId(userId, foodId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart item not found"));
-        
+
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be greater than 0");
         }
-        
+
         cart.setQuantity(quantity);
         cart = cartRepository.save(cart);
         return convertToDto(cart);
     }
-    
+
     @Override
     @Transactional
     public void removeFromCart(Long userId, int foodId) {
         Cart cart = cartRepository.findByUserIdAndFoodId(userId, foodId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart item not found"));
-        
+
         cartRepository.delete(cart);
     }
-    
+
     @Override
     public List<CartResponseDTO> getCartItems(Long userId) {
         List<Cart> cartItems = cartRepository.findByUserId(userId);
@@ -111,33 +111,33 @@ public class CartServiceImpl implements CartService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
-    
+
     @Override
     @Transactional
     public void clearCart(Long userId) {
         cartRepository.deleteByUserId(userId);
     }
-    
+
     @Override
     public Map<String, Object> getCartSummary(Long userId) {
         List<Cart> cartItems = cartRepository.findByUserId(userId);
-        
+
         double totalAmount = cartItems.stream()
                 .mapToDouble(cart -> cart.getFood().getPrice() * cart.getQuantity())
                 .sum();
-        
+
         int totalItems = cartItems.stream()
                 .mapToInt(Cart::getQuantity)
                 .sum();
-        
+
         Map<String, Object> summary = new HashMap<>();
         summary.put("totalAmount", totalAmount);
         summary.put("totalItems", totalItems);
         summary.put("itemCount", cartItems.size());
-        
+
         return summary;
     }
-    
+
     private CartResponseDTO convertToDto(Cart cart) {
         CartResponseDTO dto = new CartResponseDTO();
         dto.setId(cart.getId());

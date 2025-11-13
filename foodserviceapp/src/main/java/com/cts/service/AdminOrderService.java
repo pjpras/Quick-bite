@@ -13,32 +13,27 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Service
 public class AdminOrderService {
-    
+
     private final OrdersRepository orderRepository;
     private final CommonOrderService commonService;
     private final ModelMapper mapper;
     private AuthServiceClient authServiceClient;
-   
-    
 
     public AdminOrderService(OrdersRepository orderRepository, CommonOrderService commonService, ModelMapper mapper,
-			AuthServiceClient authServiceClient) {
-		super();
-		this.orderRepository = orderRepository;
-		this.commonService = commonService;
-		this.mapper = mapper;
-		this.authServiceClient = authServiceClient;
-	}
+            AuthServiceClient authServiceClient) {
+        super();
+        this.orderRepository = orderRepository;
+        this.commonService = commonService;
+        this.mapper = mapper;
+        this.authServiceClient = authServiceClient;
+    }
 
-
-
-	@Transactional
+    @Transactional
     public OrderPlacementResponseDTO updateOrderStatus(int orderId, OrderStatus newStatus) {
         com.cts.model.User admin = commonService.getCurrentAuthenticatedUser();
-        
+
         if (!(admin instanceof com.cts.model.Admin)) {
             throw new UnauthorizedActionException("Only Admin can update order status.");
         }
@@ -47,8 +42,6 @@ public class AdminOrderService {
         Order savedOrder = orderRepository.save(order);
         return mapper.map(savedOrder, OrderPlacementResponseDTO.class);
     }
-    
-
 
     @Transactional
     public OrderPlacementResponseDTO assignDeliveryPartner(int orderId, Long partnerId) {
@@ -59,13 +52,11 @@ public class AdminOrderService {
             throw new UnauthorizedActionException("User with ID " + partnerId + " is not a Delivery Partner.");
         }
         order.setDeliveryPartner(partnerId);
-       
+
         Order savedOrder = orderRepository.save(order);
         authServiceClient.updateDeliveryPartnerAvailability(partnerId, false);
         return mapper.map(savedOrder, OrderPlacementResponseDTO.class);
     }
-    
-
 
     public List<OrderResponseDTO> getAllOrdersWithDetails() {
         com.cts.model.User admin = commonService.getCurrentAuthenticatedUser();
@@ -74,11 +65,9 @@ public class AdminOrderService {
         }
         List<Order> orders = commonService.getAllOrders();
         return orders.stream()
-            .map(this::mapToOrderResponseDto)
-            .collect(Collectors.toList());
+                .map(this::mapToOrderResponseDto)
+                .collect(Collectors.toList());
     }
-    
-
 
     public Order getAnyOrder(int orderId) {
         com.cts.model.User admin = commonService.getCurrentAuthenticatedUser();
@@ -87,11 +76,8 @@ public class AdminOrderService {
         }
         return commonService.getOrderById(orderId);
     }
-    
-
 
     private OrderResponseDTO mapToOrderResponseDto(Order order) {
-        // Delegate to CommonOrderService to avoid code duplication
         return commonService.mapToOrderResponseDto(order);
     }
 
